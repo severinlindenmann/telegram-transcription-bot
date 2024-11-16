@@ -26,7 +26,7 @@ def deepgram_transcribe(file_path):
 
     # Configure options for audio analysis
     options = PrerecordedOptions(
-        model='whisper',
+        model='nova-2',
         detect_language=True,
         smart_format=True,
         diarize=True,
@@ -53,10 +53,10 @@ async def download_audio(bot, file_id):
 
 async def download_file_to_local(bot,chat_id, file_id):
     file = await download_audio(bot, file_id)
-    await file.download_to_drive('audio.ogg')
+    await file.download_to_drive(f'{file_id}.ogg')
     
     # transcribe the audio file
-    transcription = deepgram_transcribe("audio.ogg")['results']['channels'][0]['alternatives'][0]['transcript']
+    transcription = deepgram_transcribe(f'{file_id}.ogg')['results']['channels'][0]['alternatives'][0]['transcript']
     
     # send the transcription to the user
     await send(bot, chat_id, transcription)
